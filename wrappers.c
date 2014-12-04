@@ -3,6 +3,64 @@
 #include <signal.h> 
 #include <unistd.h>
 #include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+ssize_t getlineChk(char **lineptr, size_t *n, FILE *stream) {
+	ssize_t result = getline(lineptr, n, stream);
+	if (result < 0) {
+		perror("getline");
+		exit(1);
+	}
+	return result;
+}
+int closeChk(int fd) {
+	int result = close(fd);
+	if (result < 0) {
+		perror("close");
+		exit(1);
+	}
+	return result;
+}
+ssize_t writeChk(int fildes, const void *buf, size_t nbyte) {
+	int result = write(fildes, buf, nbyte);
+	if (result < 0) {
+		perror("write");
+		exit(1);
+	}
+	return result;
+}
+int openChk(const char *path, int oflag) {
+	int result = open(path, oflag);
+	if (result < 0) {
+		perror("openChk");
+	}
+	return result;
+}
+ssize_t readChk(int filedes, void *buf, size_t nbyte) {
+	int result = read(filedes, buf, nbyte);
+	if (read < 0) {
+		perror("read");
+		exit(1);
+	}
+	return result;
+}
+void* mallocChk(size_t size) {
+	void* result = malloc(size);
+	if (result == NULL) {
+		perror("malloc");
+		exit(1);
+	}
+	return result;
+}
+void* callocChk (size_t num, size_t size) {
+	void* result = calloc(num, size);
+	if (result == NULL) {
+		perror("calloc");
+		exit(1);
+	}
+	return result;
+}
 int forkChk() {
 	int cpid = 0;
 	if ((cpid=fork()) == -1) {
@@ -23,14 +81,6 @@ int dup2Chk(int a, int b) {
 	int result=-1;
 	if ((result=dup2(a,b)) == -1) {
 		perror("dup2");
-		exit(1);
-	}
-	return result;
-}
-int closeChk(int a) {
-	int result=-1;
-	if ((result=close(a)) == -1) {
-		perror("close");
 		exit(1);
 	}
 	return result;
