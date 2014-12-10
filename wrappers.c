@@ -34,6 +34,7 @@ int openChk(const char *path, int oflag) {
 	int result = open(path, oflag);
 	if (result < 0) {
 		perror("openChk");
+		exit(1);
 	}
 	return result;
 }
@@ -106,6 +107,7 @@ FILE* freopenChk(const char *path, const char *mode, FILE *stream) {
 	FILE* retVal = freopen(path, mode, stream);
 	if (retVal == NULL) {
 		perror("freopen");
+		exit(1);
 	}
 	return retVal;
 }
